@@ -1,0 +1,59 @@
+{
+  "years": [
+    2026
+  ],
+  "departments": [
+    "Sales",
+    "Marketing",
+    "Engineering",
+    "Product",
+    "Customer Success",
+    "Finance",
+    "HR",
+    "Operations"
+  ],
+  "gl_accounts": [
+    "Salaries & Wages",
+    "Contractor Fees",
+    "Software & Tools",
+    "Travel & Entertainment",
+    "Marketing Campaigns",
+    "Office Rent",
+    "Recruiting Fees",
+    "Professional Services",
+    "Cloud Infrastructure",
+    "Insurance",
+    "Training & Development",
+    "Office Supplies",
+    "Utilities",
+    "Equipment",
+    "Other Operating Expenses"
+  ],
+  "dept_budget_ranges": {
+    "Sales": [2000000, 3000000],
+    "Marketing": [1500000, 2500000],
+    "Engineering": [3000000, 5000000],
+    "Product": [800000, 1200000],
+    "Customer Success": [600000, 1000000],
+    "Finance": [500000, 800000],
+    "HR": [400000, 700000],
+    "Operations": [700000, 1200000]
+  },
+  "gl_account_weights": {
+    "Salaries & Wages": 0.5,
+    "Contractor Fees": 0.1,
+    "Software & Tools": 0.08,
+    "Travel & Entertainment": 0.05,
+    "Marketing Campaigns": 0.1,
+    "Office Rent": 0.03,
+    "Recruiting Fees": 0.04,
+    "Professional Services": 0.03,
+    "Cloud Infrastructure": 0.02,
+    "Insurance": 0.01,
+    "Training & Development": 0.02,
+    "Office Supplies": 0.01,
+    "Utilities": 0.005,
+    "Equipment": 0.005,
+    "Other Operating Expenses": 0.005
+  }
+}
