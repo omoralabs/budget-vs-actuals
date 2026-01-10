@@ -1,9 +1,23 @@
 [project]
 name = "automated-monthly-close-and-variance-analysis"
 version = "0.1.0"
-description = "Add your description here"
+description = "Budget vs Actuals Variance Analysis"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "pandas>=2.3.3",
+    "dbt>=1.0.0.40.14",
+    "dbt-duckdb>=1.10.0",
+    "dotenv>=0.9.9",
+    "duckdb>=1.4.3",
+    "polars>=1.36.1",
+    "pyarrow>=22.0.0",
 ]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+budget-vs-actuals = "automated_monthly_close.main:main"

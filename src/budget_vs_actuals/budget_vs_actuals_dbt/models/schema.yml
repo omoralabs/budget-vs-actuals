@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: financial_data
+    database: financial_data
+    schema: main
+    tables:
+      - name: commercial_mutations
+      - name: commercial_mutations_types
+      - name: gl_accounts
+      - name: periods
+      - name: types
+      - name: values
