@@ -9,5 +9,5 @@ sources:
       - name: commercial_mutations_types
       - name: gl_accounts
       - name: periods
-      - name: types
-      - name: values
+      - name: value_types
+      - name: pnl
