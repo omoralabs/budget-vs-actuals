@@ -1,8 +1,8 @@
 version: 2
 
 sources:
-  - name: financial_data
-    database: financial_data
+  - name: budget_vs_actuals
+    database: budget_vs_actuals
     schema: main
     tables:
       - name: commercial_mutations

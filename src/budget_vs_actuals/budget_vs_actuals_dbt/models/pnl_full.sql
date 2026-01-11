@@ -5,15 +5,15 @@ with pnl_rollup as (
 ),
 
 periods as (
-    select * from {{source('financial_data', 'periods')}}
+    select * from {{source('budget_vs_actuals', 'periods')}}
 ),
 
 gl_accounts as (
-    select * from {{source('financial_data', 'gl_accounts')}}
+    select * from {{source('budget_vs_actuals', 'gl_accounts')}}
 ),
 
 value_types as (
-    select * from {{source('financial_data', 'value_types')}}
+    select * from {{source('budget_vs_actuals', 'value_types')}}
 )
 
 select

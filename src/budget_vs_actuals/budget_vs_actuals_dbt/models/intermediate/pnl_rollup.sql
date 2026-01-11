@@ -1,11 +1,11 @@
 {{config(materialized='view')}}
 
 WITH RECURSIVE pnl as (
-    select * from {{source('financial_data', 'pnl')}}
+    select * from {{source('budget_vs_actuals', 'pnl')}}
 ),
 
 gl_accounts as (
-    select * from {{source('financial_data', 'gl_accounts')}}
+    select * from {{source('budget_vs_actuals', 'gl_accounts')}}
 ),
 
 pnl_rollup as (
