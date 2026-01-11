@@ -16,8 +16,11 @@ value_types as (
     select * from {{source('budget_vs_actuals', 'value_types')}}
 )
 
+
 select
     p.period,
+    p.date,
+    ga.id as gl_id,
     ga.name as gl_account,
     pnlr.value_type_id,
     vt.name as type,

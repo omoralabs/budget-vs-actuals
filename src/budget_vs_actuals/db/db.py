@@ -73,7 +73,8 @@ class DuckDB:
             CREATE SEQUENCE IF NOT EXISTS period_id_seq START 1;
             CREATE TABLE IF NOT EXISTS periods (
                 id INTEGER PRIMARY KEY DEFAULT nextval('period_id_seq'),
-                period INTEGER NOT NULL
+                period INTEGER NOT NULL,
+                date DATE
             );
 
             CREATE SEQUENCE IF NOT EXISTS commercial_mutations_types_id_seq START 1;
