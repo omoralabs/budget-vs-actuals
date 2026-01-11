@@ -41,15 +41,15 @@ class DuckDB:
     def drop_schema(self) -> None:
         print("Dropping existing tables and sequences...")
         self.conn.execute("""
-            DROP TABLE IF EXISTS values CASCADE;
+            DROP TABLE IF EXISTS pnl CASCADE;
             DROP TABLE IF EXISTS commercial_mutations CASCADE;
             DROP TABLE IF EXISTS periods CASCADE;
             DROP TABLE IF EXISTS commercial_mutations_types CASCADE;
             DROP TABLE IF EXISTS gl_accounts CASCADE;
-            DROP TABLE IF EXISTS types CASCADE;
-            DROP SEQUENCE IF EXISTS value_id_seq CASCADE;
+            DROP TABLE IF EXISTS value_types CASCADE;
+            DROP SEQUENCE IF EXISTS pnl_id_seq CASCADE;
             DROP SEQUENCE IF EXISTS period_id_seq CASCADE;
-            DROP SEQUENCE IF EXISTS type_id_seq CASCADE;
+            DROP SEQUENCE IF EXISTS value_type_id_seq CASCADE;
             DROP SEQUENCE IF EXISTS commercial_mutations_types_id_seq CASCADE;
             DROP SEQUENCE IF EXISTS commercial_mutations_id_seq CASCADE;
         """)
@@ -64,9 +64,9 @@ class DuckDB:
                 parent_gl INTEGER
             );
 
-            CREATE SEQUENCE IF NOT EXISTS type_id_seq START 1;
-            CREATE TABLE IF NOT EXISTS types (
-                id INTEGER PRIMARY KEY DEFAULT nextval('type_id_seq'),
+            CREATE SEQUENCE IF NOT EXISTS value_type_id_seq START 1;
+            CREATE TABLE IF NOT EXISTS value_types (
+                id INTEGER PRIMARY KEY DEFAULT nextval('value_type_id_seq'),
                 name VARCHAR NOT NULL CHECK (name IN ('actuals', 'budget'))
             );
 
@@ -82,17 +82,17 @@ class DuckDB:
                 name VARCHAR NOT NULL CHECK (name IN ('new_booking', 'upsell', 'downsell', 'churn'))
             );
 
-            CREATE SEQUENCE IF NOT EXISTS value_id_seq START 1;
-            CREATE TABLE IF NOT EXISTS values (
-                id INTEGER PRIMARY KEY DEFAULT nextval('value_id_seq'),
+            CREATE SEQUENCE IF NOT EXISTS pnl_id_seq START 1;
+            CREATE TABLE IF NOT EXISTS pnl (
+                id INTEGER PRIMARY KEY DEFAULT nextval('pnl_id_seq'),
                 gl_account_id INTEGER NOT NULL,
-                type_id INTEGER NOT NULL,
+                value_type_id INTEGER NOT NULL,
                 period_id INTEGER NOT NULL,
                 amount DOUBLE NOT NULL,
                 FOREIGN KEY (gl_account_id) REFERENCES gl_accounts(id),
-                FOREIGN KEY (type_id) REFERENCES types(id),
+                FOREIGN KEY (value_type_id) REFERENCES value_types(id),
                 FOREIGN KEY (period_id) REFERENCES periods(id),
-                UNIQUE (gl_account_id, period_id, type_id)
+                UNIQUE (gl_account_id, period_id, value_type_id)
             );
 
             CREATE SEQUENCE IF NOT EXISTS commercial_mutations_id_seq START 1;
@@ -102,7 +102,9 @@ class DuckDB:
                 commercial_mutation_type_id INTEGER NOT NULL,
                 nr_of_customers INTEGER NOT NULL,
                 mrr_per_customer DOUBLE,
+                value_type_id INTEGER NOT NULL,
                 FOREIGN KEY (period_id) REFERENCES periods(id),
+                FOREIGN KEY (value_type_id) REFERENCES value_types(id),
                 FOREIGN KEY (commercial_mutation_type_id) REFERENCES commercial_mutations_types(id)
             );
         """)
