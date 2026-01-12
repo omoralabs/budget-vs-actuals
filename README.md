@@ -141,3 +141,7 @@ fixed_costs (6000)
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/license/MIT)
+
+---
+
+Built with care by the Omora Labs team.
