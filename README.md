@@ -140,7 +140,7 @@ fixed_costs (6000)
 
 ## License
 
-This project is licensed under the [MIT License](https://opensource.org/license/MIT)
+This project is licensed under the MIT License.
 
 ---
 
