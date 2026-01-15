@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/omora.svg" height="80" alt="Omora Labs" />
+</p>
+
 # Budget vs Actuals Variance Analysis
 
 A financial variance analysis system built with DuckDB/MotherDuck and dbt for comparing budgeted vs actual P&L performance with hierarchical account rollup.
