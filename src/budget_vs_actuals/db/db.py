@@ -42,16 +42,12 @@ class DuckDB:
         print("Dropping existing tables and sequences...")
         self.conn.execute("""
             DROP TABLE IF EXISTS pnl CASCADE;
-            DROP TABLE IF EXISTS commercial_mutations CASCADE;
             DROP TABLE IF EXISTS periods CASCADE;
-            DROP TABLE IF EXISTS commercial_mutations_types CASCADE;
             DROP TABLE IF EXISTS gl_accounts CASCADE;
             DROP TABLE IF EXISTS value_types CASCADE;
             DROP SEQUENCE IF EXISTS pnl_id_seq CASCADE;
             DROP SEQUENCE IF EXISTS period_id_seq CASCADE;
             DROP SEQUENCE IF EXISTS value_type_id_seq CASCADE;
-            DROP SEQUENCE IF EXISTS commercial_mutations_types_id_seq CASCADE;
-            DROP SEQUENCE IF EXISTS commercial_mutations_id_seq CASCADE;
         """)
 
     def create_tables(self) -> None:
@@ -61,7 +57,8 @@ class DuckDB:
             CREATE TABLE IF NOT EXISTS gl_accounts (
                 id INTEGER PRIMARY KEY,
                 name VARCHAR NOT NULL,
-                parent_gl INTEGER
+                parent_gl INTEGER,
+                FOREIGN KEY(parent_gl) REFERENCES gl_accounts(id) ON DELETE SET NULL
             );
 
             CREATE SEQUENCE IF NOT EXISTS value_type_id_seq START 1;
@@ -74,13 +71,7 @@ class DuckDB:
             CREATE TABLE IF NOT EXISTS periods (
                 id INTEGER PRIMARY KEY DEFAULT nextval('period_id_seq'),
                 period INTEGER NOT NULL,
-                date DATE
-            );
-
-            CREATE SEQUENCE IF NOT EXISTS commercial_mutations_types_id_seq START 1;
-            CREATE TABLE IF NOT EXISTS commercial_mutations_types (
-                id INTEGER PRIMARY KEY DEFAULT nextval('commercial_mutations_types_id_seq'),
-                name VARCHAR NOT NULL CHECK (name IN ('new_booking', 'upsell', 'downsell', 'churn'))
+                date DATE NOT NULL
             );
 
             CREATE SEQUENCE IF NOT EXISTS pnl_id_seq START 1;
@@ -94,19 +85,6 @@ class DuckDB:
                 FOREIGN KEY (value_type_id) REFERENCES value_types(id),
                 FOREIGN KEY (period_id) REFERENCES periods(id),
                 UNIQUE (gl_account_id, period_id, value_type_id)
-            );
-
-            CREATE SEQUENCE IF NOT EXISTS commercial_mutations_id_seq START 1;
-            CREATE TABLE IF NOT EXISTS commercial_mutations (
-                id INTEGER PRIMARY KEY DEFAULT nextval('commercial_mutations_id_seq'),
-                period_id INTEGER NOT NULL,
-                commercial_mutation_type_id INTEGER NOT NULL,
-                nr_of_customers INTEGER NOT NULL,
-                mrr_per_customer DOUBLE,
-                value_type_id INTEGER NOT NULL,
-                FOREIGN KEY (period_id) REFERENCES periods(id),
-                FOREIGN KEY (value_type_id) REFERENCES value_types(id),
-                FOREIGN KEY (commercial_mutation_type_id) REFERENCES commercial_mutations_types(id)
             );
         """)
 
