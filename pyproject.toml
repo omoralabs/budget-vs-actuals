@@ -1,5 +1,5 @@
 [project]
-name = "automated-monthly-close-and-variance-analysis"
+name = "budget-vs-actuals"
 version = "0.1.0"
 description = "Budget vs Actuals Variance Analysis"
 readme = "README.md"
@@ -9,15 +9,12 @@ dependencies = [
     "dbt-duckdb>=1.10.0",
     "dotenv>=0.9.9",
     "duckdb>=1.4.3",
-    "polars>=1.36.1",
-    "pyarrow>=22.0.0",
+    "polars"
 ]
 
-[tool.setuptools]
-package-dir = {"" = "src"}
-
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.uv]
+package = true
 
 [project.scripts]
-budget-vs-actuals = "automated_monthly_close.main:main"
+plan-db-local = "plan_vs_actuals.database.main:entry_setup_local_db"
+plan-db-remote = "plan_vs_actuals.database.main:entry_to_remote"

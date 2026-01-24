@@ -2,22 +2,45 @@
   <img src="public/omora.svg" height="80" alt="Omora Labs" />
 </p>
 
-# Budget vs Actuals Variance Analysis
+# Plan vs Actuals Variance Analysis
 
-A financial variance analysis system built with DuckDB/MotherDuck and dbt for comparing budgeted vs actual P&L performance with hierarchical account rollup.
+A production-grade financial variance analysis blueprint built on **Omora Labs** components. This system demonstrates how semantic layers, facts, transformations, and reporting work together to deliver automated budget vs actuals analysis with hierarchical P&L rollup.
 
-## Features
+## What is Omora Labs?
 
-- **Hierarchical P&L Rollup**: Recursive CTEs automatically aggregate child accounts to parent levels
-- **Variance Analysis**: Side-by-side budget vs actuals comparison with variance calculations
-- **Automatic Calculations**: Variance percentages with zero-division protection
-- **Multi-Level Hierarchy**: Support for unlimited account hierarchy depth
-- **Cloud-Native**: Built on MotherDuck (cloud DuckDB) for scalable analytics
+Omora Labs provides reusable finance data components - semantic dimensions, transformations, and reporting blocks - for building production-grade analytics pipelines. Code-first, version-controlled, no vendor lock-in.
+
+**Core principles:**
+- **Open Code**: Fully open source components and blocks
+- **Composition**: Small, well-defined components assembled into higher-level blocks
+- **Single Source of Truth**: All metrics and dimensions live in one place
+- **Data Portability**: Built on open formats; your data stays yours
+- **Only Best Stack**: Best-in-class open source tools
+- **AI Ready**: Structured, readable code that AI can understand
+
+## Architecture
+
+This blueprint follows the Omora Labs five-layer architecture:
+
+### 1. Semantic Layers
+Business meaning defined first as contracts. GL Accounts, Periods, and Value Types encode financial hierarchies and classification rules before any data is loaded.
+
+### 2. Facts
+Structured observations that conform to semantic contracts. The P&L fact table stores actuals and budget figures classified by period, account, and value type.
+
+### 3. Workers - Not used in this project
+Background processes for data ingestion and enrichment (e.g., fetching FX rates, loading ERP data).
+
+### 4. Transformations
+Analytical models built using dbt. All business logic is inherited from semantic layers - transformations focus on derivation, not interpretation.
+
+### 5. Reporting & BI
+Consumption layer for dashboards and outputs. All business logic is already applied upstream.
 
 ## Tech Stack
 
-- **Database**: DuckDB / MotherDuck
-- **Data Transformation**: dbt-core with dbt-duckdb adapter
+- **Semantic Layer & Facts**: DuckDB / MotherDuck
+- **Transformations**: dbt-core with dbt-duckdb adapter
 - **Data Processing**: Polars with PyArrow backend
 - **Package Management**: uv
 
@@ -26,120 +49,20 @@ A financial variance analysis system built with DuckDB/MotherDuck and dbt for co
 ```bash
 # Install dependencies
 uv sync
-
-# Set up environment variables
-cp .env.example .env
-# Add your MOTHERDUCK_TOKEN to .env
 ```
 
 ## Usage
 
 ```bash
-# Load sample data and create database schema
-uv run python -m budget_vs_actuals.main
+# To create a local db and loaded it with data
+uv run plan-db-local
+
+# To create a remote db and loaded it with data
+uv run plan-db-remote
 
 # Run dbt transformations
-cd src/budget_vs_actuals/budget_vs_actuals_dbt
+cd src/plan_vs_actuals/plan_vs_actuals_dbt
 uv run dbt run
-```
-
-## Project Structure
-
-```
-src/budget_vs_actuals/
-├── db/              # Database connector and schema setup
-├── data/            # Sample data and utilities
-└── budget_vs_actuals_dbt/
-    └── models/      # dbt analytical models
-        ├── intermediate/
-        │   ├── pnl_rollup.sql      # Recursive hierarchy rollup
-        │   └── pnl_base_data.sql   # Enriched P&L with names
-        ├── pnl_full.sql            # Base data + derived metrics
-        └── pnl_pivot.sql           # Budget vs actuals + variances
-```
-
-## Key Metrics Calculated
-
-### Derived Metrics
-- **Gross Margin**: Revenue - COGS
-- **Gross Margin %**: Gross Margin / Revenue
-- **COGS %**: COGS / Revenue
-- **Total Cost**: COGS + Commercial Costs + Fixed Costs
-- **Total Cost %**: Total Cost / Revenue
-- **Commercial Costs %**: Commercial Costs / Revenue
-- **Contribution Margin**: Gross Margin - Commercial Costs
-- **Contribution Margin %**: Contribution Margin / Revenue
-- **Fixed Costs %**: Fixed Costs / Revenue
-- **EBITDA**: Contribution Margin - Fixed Costs
-- **EBITDA %**: EBITDA / Revenue
-
-### Variance Analysis
-- **Variance (Absolute)**: Actuals - Budget
-- **Variance %**: (Actuals - Budget) / Budget
-- **Hierarchical Totals**: Automatic parent account aggregation
-
-## Data Model
-
-### Core Tables
-
-- **gl_accounts**: Chart of accounts with parent-child hierarchy
-- **periods**: Time periods (YYMM format with YYYY-MM-DD date column)
-- **value_types**: Budget vs Actuals classifier
-- **pnl**: Financial transactions (leaf-level data)
-
-### Analytical Views
-
-- **pnl_rollup**: Recursive CTE that aggregates child accounts to parents
-- **pnl_base_data**: Joins rollup with periods, accounts, and value types for human-readable output
-- **pnl_full**: Base data + derived metrics (gross margin, contribution margin, EBITDA) using incremental CTEs
-- **pnl_pivot**: Pivots budget/actuals side-by-side and calculates variance metrics
-
-## Example Hierarchy
-
-GL accounts use spaced IDs (1000, 2000, 4000, 6000) with gaps for calculated metrics:
-
-```
-revenue (1000)
-├── subscriptions (1010)
-├── services (1020)
-└── others (1030)
-
-cogs (2000)
-├── payment_fees (2010)
-└── other_costs (2020)
-[cogs_pct (2001) - calculated]
-
-[gross_margin (3000) - calculated]
-[gross_margin_pct (3001) - calculated]
-
-commercial_costs (4000)
-├── sales (4010)
-│   ├── sales_staff (4011)
-│   └── sales_non_staff (4012)
-├── marketing (4020)
-│   ├── marketing_staff (4021)
-│   └── marketing_non_staff (4022)
-└── csm (4030)
-    ├── csm_staff (4031)
-    └── csm_non_staff (4032)
-[commercial_costs_pct (4001) - calculated]
-
-[contribution_margin (5000) - calculated]
-[contribution_margin_pct (5001) - calculated]
-
-fixed_costs (6000)
-├── development (6010)
-├── product (6020)
-├── talent (6030)
-├── general_and_admin (6040)
-└── data (6050)
-[fixed_costs_pct (6001) - calculated]
-
-[total_cost (7000) - calculated]
-[total_cost_pct (7001) - calculated]
-
-[ebitda (8000) - calculated]
-[ebitda_pct (8001) - calculated]
 ```
 
 ## License

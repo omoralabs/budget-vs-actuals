@@ -1,12 +1,11 @@
 version: 2
 
 sources:
-  - name: budget_vs_actuals
-    database: budget_vs_actuals
+  - name: plan_vs_actuals
+    database: plan_vs_actuals
     schema: main
     tables:
-      - name: commercial_mutations
-      - name: commercial_mutations_types
+      - name: gl_accounts_types
       - name: gl_accounts
       - name: periods
       - name: value_types

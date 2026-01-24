@@ -1,0 +1,27 @@
+{
+  "table_name": "gl_accounts",
+  "staging": true,
+  "data": "gl_accounts_simple.csv",
+  "fields": {
+    "id": {
+      "type": "INTEGER PRIMARY KEY"
+    },
+    "name": {
+      "type": "VARCHAR NOT NULL"
+    },
+    "parent_gl": {
+      "type": "INTEGER",
+      "description": "Self-referencing foreign key to gl_accounts(id). Not enforced via DB given DuckDB current limitations."
+    },
+    "gl_account_type_id": {
+      "type": "INTEGER",
+      "description": "Foreign key to gl_accounts_types(id)"
+    }
+  },
+  "foreign_keys": [
+    {
+      "field": "gl_account_type_id",
+      "references": "gl_accounts_types(id)"
+    }
+  ]
+}
