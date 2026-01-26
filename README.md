@@ -30,7 +30,3 @@ uv run dbt run
 ## License
 
 This project is licensed under the MIT License.
-
----
-
-Built with care by the Omora Labs team.
