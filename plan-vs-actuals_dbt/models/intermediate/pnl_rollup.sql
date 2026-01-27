@@ -39,7 +39,7 @@ select
     vt.name as type,
     SUM(pnlr.amount) as amount
 from pnl_rollup pnlr
-join periods p ON p.date = pnlr.date
+join dates p ON p.date = pnlr.date
 join gl_accounts ga ON ga.id = pnlr.gl_account_id
 join value_types vt ON vt.id = pnlr.value_type_id
 group by p.date, ga.id, ga.name, pnlr.value_type_id, vt.name

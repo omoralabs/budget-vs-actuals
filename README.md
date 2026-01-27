@@ -13,10 +13,10 @@ uv sync
 
 ```bash
 # To create a local db and loaded it with data
-uv run db-local
+uv run omora-local
 
 # To create a remote db and loaded it with data
-uv run db-remote
+uv run omora-remote
 
 # Run dbt transformations
 cd src/plan_vs_actuals/plan_vs_actuals_dbt

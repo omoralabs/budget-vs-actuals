@@ -16,5 +16,5 @@ dependencies = [
 package = true
 
 [project.scripts]
-db-local = "plan_vs_actuals.database.main:entry_setup_local_db"
-db-remote = "plan_vs_actuals.database.main:entry_to_remote"
+omora-local = "plan_vs_actuals.database.main:entry_setup_local_db"
+omora-remote = "plan_vs_actuals.database.main:entry_to_remote"
