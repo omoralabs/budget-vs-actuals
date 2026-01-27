@@ -1,4 +1,5 @@
 {
+  "db_name": "plan_vs_actuals",
   "semantic_layers": {
     "gl_accounts_simple": {
       "schema": "semantic_layers/gl_accounts_simple.json",
@@ -22,5 +23,11 @@
       "schema": "facts/pnl.json",
       "dependencies": ["periods", "value_types", "gl_accounts"]
     }
+  },
+  "transformations": {
+    "pnl_rollup": "registry/transformations/models/intermediate/pnl_rollup.sql",
+    "pnl_metrics": "registry/transformations/models/intermediate/pnl_metrics.sql",
+    "pnl_full": "registry/transformations/models/intermediate/pnl_full.sql",
+    "pnl_pivot": "registry/transformations/models/pnl_pivot.sql"
   }
 }

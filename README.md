@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="public/omora.svg" height="80" alt="Omora Labs" />
-</p>
-
 # Plan vs Actuals Variance Analysis
 
 A production-grade financial variance analysis blueprint built on **Omora Labs** components. This system demonstrates how semantic layers, facts, transformations, and reporting work together to deliver automated budget vs actuals analysis with hierarchical P&L rollup.
