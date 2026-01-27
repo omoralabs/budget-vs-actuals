@@ -13,10 +13,10 @@ uv sync
 
 ```bash
 # To create a local db and loaded it with data
-uv run plan-db-local
+uv run db-local
 
 # To create a remote db and loaded it with data
-uv run plan-db-remote
+uv run db-remote
 
 # Run dbt transformations
 cd src/plan_vs_actuals/plan_vs_actuals_dbt
